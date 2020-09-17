@@ -1,3 +1,5 @@
+# Syntax requires python version >= 3.6.x
+
 from pathlib import Path
 
 
@@ -111,13 +113,13 @@ class Sequence:
         c_strand = ""
 
         for base in self.bases:
-            if base is 'A':
+            if base == 'A':
                 c_strand += 'T'
-            if base is 'T':
+            if base == 'T':
                 c_strand += 'A'
-            if base is 'C':
+            if base == 'C':
                 c_strand += 'G'
-            if base is 'G':
+            if base == 'G':
                 c_strand += 'C'
 
         return Sequence(c_strand)
@@ -136,7 +138,7 @@ class Codon:
 
     @staticmethod
     def from_sequence(sequence: str):
-        if(len(sequence) is not 3):
+        if(len(sequence) != 3):
             raise 'Sequence must be of length 3'
 
         return CODON_LOOKUP_TREE[sequence[0]][sequence[1]][sequence[2]]
