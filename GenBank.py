@@ -85,7 +85,7 @@ class Sequence:
         """
 
         preview_len = 10
-        return "<Sequence> {}{}".format(
+        return "<Sequence> 5'-{}{}-3'".format(
             self.bases[0:preview_len],
             "..." if len(self.bases) > preview_len else "")
 
