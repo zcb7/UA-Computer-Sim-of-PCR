@@ -125,3 +125,10 @@ class Sequence:
                 c_strand += 'C'
 
         return Sequence(c_strand[::-1])
+
+    def gc_content(self):
+        """Computes the GC content of a sequence
+
+        GC content is the ratio of G and C bases to the total sequence length
+        """
+        return (self.bases.count('C') + self.bases.count('G')) / len(self.bases)

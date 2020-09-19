@@ -11,6 +11,8 @@ def main():
 
     print('M Gene Sequence cDNA\n{}\n'.format(M_gene.compliment().bases))
 
+    print('GC%: {}'.format(M_gene.gc_content()))
+
 
 if __name__ == "__main__":
     main()
