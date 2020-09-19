@@ -103,13 +103,12 @@ class Sequence:
         """
         return Sequence(self.bases[begin-1:end])
 
-    def group_codons(self):
-        nucleotides_in_codon = 3
-        codon_sequences = [self.bases[i:i+nucleotides_in_codon]
-                           for i in range(0, len(self.bases), nucleotides_in_codon)]
-        return [Codon.from_sequence(x) for x in codon_sequences]
-
     def compliment(self):
+        """Create a compliment of the sequence
+
+        Compliment has the complimentary base pairs and is flipped to maintain
+        a reading of 5' to 3'
+        """
         c_strand = ""
 
         for base in self.bases:
@@ -122,131 +121,4 @@ class Sequence:
             if base == 'G':
                 c_strand += 'C'
 
-        return Sequence(c_strand)
-
-
-class Codon:
-    def __init__(self, name: str, abbreviation: str, symbol: str, start=False, stop=False):
-        self.name = name
-        self.abbreviation = abbreviation
-        self.symbol = symbol
-        self.start = start
-        self.stop = stop
-
-    def __repr__(self):
-        return "({}/{}) {}".format(self.abbreviation, self.symbol, self.name)
-
-    @staticmethod
-    def from_sequence(sequence: str):
-        if(len(sequence) != 3):
-            raise 'Sequence must be of length 3'
-
-        return CODON_LOOKUP_TREE[sequence[0]][sequence[1]][sequence[2]]
-
-
-CODON_LOOKUP_TREE = {
-    "A": {
-        "A": {
-            "A": Codon('Lysine', 'Lys', 'K'),
-            "T": Codon('Asparagine', 'Asn', 'N'),
-            "C": Codon('Asparagine', 'Asn', 'N'),
-            "G": Codon('Lysine', 'Lys', 'K')
-        },
-        "T": {
-            "A": Codon('Isoleucine', 'Ile', 'I'),
-            "T": Codon('Isoleucine', 'Ile', 'I'),
-            "C": Codon('Isoleucine', 'Ile', 'I'),
-            "G": Codon('Methionine', 'Met', 'M', start=True)
-        },
-        "C": {
-            "A": Codon('Threonine', 'Thr', 'T'),
-            "T": Codon('Threonine', 'Thr', 'T'),
-            "C": Codon('Threonine', 'Thr', 'T'),
-            "G": Codon('Threonine', 'Thr', 'T')
-        },
-        "G": {
-            "A": Codon('Arginine', 'Arg', 'R'),
-            "T": Codon('Serine', 'Ser', 'S'),
-            "C": Codon('Serine', 'Ser', 'S'),
-            "G": Codon('Arginine', 'Arg', 'R')
-        }
-    },
-    "T": {
-        "A": {
-            "A": Codon('Ochre', None, None, stop=True),
-            "T": Codon('Tyrosine', 'Tyr', 'Y'),
-            "C": Codon('Tyrosine', 'Tyr', 'Y'),
-            "G": Codon('Amber', None, None, stop=True)
-        },
-        "T": {
-            "A": Codon('Leucine', 'Leu', 'L'),
-            "T": Codon('Phenylalanine', 'Phe', 'F'),
-            "C": Codon('Phenylalanine', 'Phe', 'F'),
-            "G": Codon('Leucine', 'Leu', 'L')
-        },
-        "C": {
-            "A": Codon('Serine', 'Ser', 'S'),
-            "T": Codon('Serine', 'Ser', 'S'),
-            "C": Codon('Serine', 'Ser', 'S'),
-            "G": Codon('Serine', 'Ser', 'S')
-        },
-        "G": {
-            "A": Codon('Opal', None, None, stop=True),
-            "T": Codon('Cysteine', 'Cys', 'C'),
-            "C": Codon('Cysteine', 'Cys', 'C'),
-            "G": Codon('Tryptophan', 'Trp', 'W')
-        }
-    },
-    "C": {
-        "A": {
-            "A": Codon('Glutamine', 'Gln', 'Q'),
-            "T": Codon('Histidine', 'His', 'H'),
-            "C": Codon('Histidine', 'His', 'H'),
-            "G": Codon('Glutamine', 'Gln', 'Q')
-        },
-        "T": {
-            "A": Codon('Leucine', 'Leu', 'L'),
-            "T": Codon('Leucine', 'Leu', 'L'),
-            "C": Codon('Leucine', 'Leu', 'L'),
-            "G": Codon('Leucine', 'Leu', 'L')
-        },
-        "C": {
-            "A": Codon('Proline', 'Pro', 'P'),
-            "T": Codon('Proline', 'Pro', 'P'),
-            "C": Codon('Proline', 'Pro', 'P'),
-            "G": Codon('Proline', 'Pro', 'P')
-        },
-        "G": {
-            "A": Codon('Arginine', 'Arg', 'R'),
-            "T": Codon('Arginine', 'Arg', 'R'),
-            "C": Codon('Arginine', 'Arg', 'R'),
-            "G": Codon('Arginine', 'Arg', 'R')
-        }
-    },
-    "G": {
-        "A": {
-            "A": Codon('Glutamic acid', 'Glu', 'E'),
-            "T": Codon('Aspartic acid', 'Asp', 'D'),
-            "C": Codon('Aspartic acid', 'Asp', 'D'),
-            "G": Codon('Glutamic acid', 'Glu', 'E')
-        },
-        "T": {
-            "A": Codon('Valine', 'Val', 'V'),
-            "T": Codon('Valine', 'Val', 'V'),
-            "C": Codon('Valine', 'Val', 'V'),
-            "G": Codon('Valine', 'Val', 'V')
-        },
-        "C": {
-            "A": Codon('Alanine', 'Ala', 'A'),
-            "T": Codon('Alanine', 'Ala', 'A'),
-            "C": Codon('Alanine', 'Ala', 'A'),
-            "G": Codon('Alanine', 'Ala', 'A')
-        },
-        "G": {
-            "A": Codon('Glycine', 'Gly', 'G'),
-            "T": Codon('Glycine', 'Gly', 'G'),
-            "C": Codon('Glycine', 'Gly', 'G'),
-            "G": Codon('Glycine', 'Gly', 'G')
-        }
-    }
-}
+        return Sequence(c_strand[::-1])

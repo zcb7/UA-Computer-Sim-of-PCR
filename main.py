@@ -13,11 +13,6 @@ def main():
     # (5' -> 3' / 3' -> 5')
     print('M Gene Sequence cDNA\n{}\n'.format(M_gene.compliment().bases))
 
-    # I don't think we will be using this part in the project
-    symbols = map(lambda codon: codon.symbol or "", M_gene.group_codons())
-    protein_string = "".join(symbols)
-    print('Protein String\n{}\n'.format(protein_string))
-
 
 if __name__ == "__main__":
     main()
