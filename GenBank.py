@@ -47,6 +47,9 @@ class FASTA:
         """Parse FASTA file
 
         Should not be invoked directly
+
+        Note: The sequence does not have to be reversed because
+        all FASTA files read from 5' to 3'
         """
 
         file = open(self.file_path, "r")
