@@ -9,8 +9,6 @@ def main():
 
     print('M Gene Sequence\n{}\n'.format(M_gene.bases))
 
-    # I think this needs to be flipped to keep all sequences in the same direction
-    # (5' -> 3' / 3' -> 5')
     print('M Gene Sequence cDNA\n{}\n'.format(M_gene.compliment().bases))
 
 
