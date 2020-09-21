@@ -88,7 +88,7 @@ class Sequence:
         """
 
         preview_len = 10
-        return "<Sequence> 5'-{}{}-3'".format(
+        return "<Sequence> {}{}".format(
             self.bases[0:preview_len],
             "..." if len(self.bases) > preview_len else "")
 
@@ -109,9 +109,30 @@ class Sequence:
     def compliment(self):
         """Create a compliment of the sequence
 
+        Compliment has the complimentary base pairs and is read from 3' to 5'
+        """
+        c_strand = ""
+
+        for base in self.bases:
+            if base == 'A':
+                c_strand += 'T'
+            if base == 'T':
+                c_strand += 'A'
+            if base == 'C':
+                c_strand += 'G'
+            if base == 'G':
+                c_strand += 'C'
+
+        return Sequence(c_strand)
+
+    def r_compliment(self):
+
+        """Create a reverse compliment of the sequence
+
         Compliment has the complimentary base pairs and is flipped to maintain
         a reading of 5' to 3'
         """
+
         c_strand = ""
 
         for base in self.bases:
