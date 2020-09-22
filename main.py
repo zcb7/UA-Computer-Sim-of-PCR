@@ -36,7 +36,7 @@ def main():
     out_file.write('strand,complimentary strand\n')
     for result in results:
         if result[0] != None:
-            out_file.write("{}".format(result[0].bases))
+            out_file.write("{},".format(result[0].bases))
         if result[1] != None:
             out_file.write("{}".format(result[1].bases))
         out_file.write('\n')
