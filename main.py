@@ -35,7 +35,11 @@ def main():
     out_file = open('result.csv', 'w')
     out_file.write('strand,complimentary strand\n')
     for result in results:
-        out_file.write("{},{}\n".format(result[0].bases, result[1].bases))
+        if result[0] != None:
+            out_file.write("{}".format(result[0].bases))
+        if result[1] != None:
+            out_file.write("{}".format(result[1].bases))
+        out_file.write('\n')
     out_file.close()
     print('Results written to result.csv')
 
