@@ -2,7 +2,8 @@ from time import time
 from typing import List, Tuple
 
 from GenBank import Sequence
-from Utils import distance_between_primers, generate_fall_off_rate
+from Utils import (clean_empty_sequences, clean_empty_tuples,
+                   distance_between_primers, generate_fall_off_rate)
 
 
 def PCR(segment: Tuple[Sequence, Sequence], primers: Tuple[Sequence, Sequence], num_cycles: int = 20, fall_off_noise: int = None) -> List[Tuple[Sequence, Sequence]]:
@@ -29,6 +30,8 @@ def PCR(segment: Tuple[Sequence, Sequence], primers: Tuple[Sequence, Sequence], 
         fall_off_rate = generate_fall_off_rate(
             d=distance_between_primers(segment, primers), e=fall_off_noise)
         products = annealing_elongation(single_strands, primers, fall_off_rate)
+        products = clean_empty_sequences(products)
+        products = clean_empty_tuples(products)
 
         end_time = time()
         time_elapsed = round(end_time - start_time, 2)
