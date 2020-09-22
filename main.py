@@ -19,7 +19,7 @@ def main():
                Sequence('GGAGTGGCACGTTGAGAAGA'))
 
     # Other PCR parameters
-    num_cycles = 20
+    num_cycles = 50
     fall_off_noise = 50
 
     # Begin PCR

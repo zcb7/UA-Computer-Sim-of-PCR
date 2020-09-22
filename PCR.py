@@ -72,12 +72,12 @@ def annealing_elongation(single_strands: List[Sequence], primers: Tuple[Sequence
     [f_primer, r_primer] = primers
 
     for strand in single_strands:
-        if strand.bases.find(f_primer.bases) != -1:
+        if strand.bases.find(f_primer.compliment().bases) != -1:
             product = elongate(strand, f_primer, fall_off_rate)
             products.append(product)
             continue
 
-        if strand.bases.find(r_primer.bases) != -1:
+        if strand.bases.find(r_primer.compliment().bases) != -1:
             product = elongate(strand, r_primer, fall_off_rate)
             products.append(product)
             continue
@@ -97,9 +97,10 @@ def elongate(template_strand, primer, fall_off_rate) -> Tuple[Sequence, Sequence
     Returns:
         Tuple[Sequence, Sequence]: Elongated paired strand
     """
-    start_index = template_strand.bases.find(primer.bases)
-    end_index = start_index + fall_off_rate + len(primer.bases)
+    start_index = template_strand.bases.find(
+        primer.compliment().bases) + len(primer.bases)
+    end_index = start_index - fall_off_rate - len(primer.bases)
 
-    copied_segment_sequence = template_strand.bases[start_index:end_index]
+    copied_segment_sequence = template_strand.bases[end_index:start_index]
     copied_segment = Sequence(copied_segment_sequence).compliment()
     return (template_strand, copied_segment)

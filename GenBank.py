@@ -109,7 +109,7 @@ class Sequence:
     def compliment(self):
         """Create a reverse compliment of the sequence
 
-        Compliment has the complimentary base pairs and is flipped to maintain
+        Compliment has the complimentary base pairs and is reversed to maintain
         a reading of 5' to 3'
         """
         c_strand = ""
