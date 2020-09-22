@@ -79,7 +79,7 @@ def annealing_elongation(single_strands: List[Sequence], primers: Tuple[Sequence
             products.append(product)
             continue
 
-    products.append((strand, None))
+        products.append((strand, None))
     return products
 
 
