@@ -62,6 +62,9 @@ def annealing_elongation(single_strands: List[Sequence], primers: Tuple[Sequence
     Args:
         single_strands (List[Sequence]): List of single strands
         primers (Tuple[Sequence, Sequence]): Forward and reverse primers
+
+    Returns:
+        List[Sequence]: [description]
     """
 
     products: List[Tuple[Sequence, Sequence]] = []
