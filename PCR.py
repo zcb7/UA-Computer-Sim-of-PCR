@@ -98,5 +98,5 @@ def elongate(template_strand, primer, fall_off_rate) -> Tuple[Sequence, Sequence
     end_index = start_index + fall_off_rate
 
     copied_segment_sequence = template_strand.bases[start_index:end_index]
-    copied_segment = Sequence(copied_segment_sequence)
+    copied_segment = Sequence(copied_segment_sequence).compliment()
     return (template_strand, copied_segment)
