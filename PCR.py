@@ -91,11 +91,8 @@ def elongate(template_strand, primer, fall_off_rate) -> Tuple[Sequence, Sequence
     Returns:
         Tuple[Sequence, Sequence]: Elongated paired strand
     """
-    # NOTE Consider increasing the end_index by len(primer.bases)
-    # since the primer is already bound to the template strand
-    # and does not need to be copied by Taq Polymerase.
     start_index = template_strand.bases.find(primer.bases)
-    end_index = start_index + fall_off_rate
+    end_index = start_index + fall_off_rate + len(primer.bases)
 
     copied_segment_sequence = template_strand.bases[start_index:end_index]
     copied_segment = Sequence(copied_segment_sequence).compliment()
