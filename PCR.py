@@ -49,12 +49,14 @@ def denature(sequences: List[Tuple[Sequence, Sequence]]) -> List[Sequence]:
     """
     single_strands = []
     for sequence in sequences:
-        single_strands.append(sequence[0])
-        single_strands.append(sequence[1])
+        if sequence[0] != None:
+            single_strands.append(sequence[0])
+        if sequence[1] != None:
+            single_strands.append(sequence[1])
     return single_strands
 
 
-def annealing_elongation(single_strands: List[Sequence], primers: Tuple[Sequence, Sequence], fall_off_rate: int) -> List[Tuple[Sequence, Sequence]]:
+def annealing_elongation(single_strands: List[Sequence], primers: Tuple[Sequence, Sequence], fall_off_rate: int) -> List[Sequence]:
     """Anneals and elongates a list of single strands using provided forward and reverse primers
 
     Args:
@@ -77,6 +79,7 @@ def annealing_elongation(single_strands: List[Sequence], primers: Tuple[Sequence
             products.append(product)
             continue
 
+    products.append((strand, None))
     return products
 
 
