@@ -29,6 +29,7 @@ def PCR(segment: Tuple[Sequence, Sequence], primers: Tuple[Sequence, Sequence], 
         # instead of every cycle
         fall_off_rate = generate_fall_off_rate(
             d=distance_between_primers(segment, primers), e=fall_off_noise)
+        print(fall_off_rate)
         products = annealing_elongation(single_strands, primers, fall_off_rate)
         products = clean_empty_sequences(products)
         products = clean_empty_tuples(products)
@@ -100,9 +101,13 @@ def elongate(template_strand, primer, fall_off_rate) -> Tuple[Sequence, Sequence
     Returns:
         Tuple[Sequence, Sequence]: Elongated paired strand
     """
-    start_index = template_strand.bases.find(
-        primer.compliment().bases) + len(primer.bases)
-    end_index = start_index - fall_off_rate - len(primer.bases)
+    c_primer = primer.compliment()
+    index_of_primer = template_strand.bases.find(c_primer.bases)
+    primer_length = len(primer.bases)
+
+    start_index = index_of_primer + primer_length
+
+    end_index = max(0, index_of_primer - fall_off_rate)
 
     copied_segment_sequence = template_strand.bases[end_index:start_index]
     copied_segment = Sequence(copied_segment_sequence).compliment()
