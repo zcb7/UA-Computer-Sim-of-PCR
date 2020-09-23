@@ -19,6 +19,9 @@ def main():
                Sequence('GGAGTGGCACGTTGAGAAGA'))
 
     # Other PCR parameters
+    # NOTE: Raising this number too high will result in PCR
+    # products in the billions (and likely much higher since
+    # it grows exponentially) and will blow the stack (MemoryError)
     num_cycles = 50
     fall_off_noise = 50
 
