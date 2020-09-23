@@ -1,7 +1,7 @@
 from time import time
 
 from GenBank import FASTA, Sequence
-from PCR import PCR
+from PCR import PCR, getStats
 
 
 def main():
@@ -19,7 +19,7 @@ def main():
                Sequence('GGAGTGGCACGTTGAGAAGA'))
 
     # Other PCR parameters
-    num_cycles = 50
+    num_cycles = 20
     fall_off_noise = 50
 
     # Begin PCR
@@ -30,6 +30,9 @@ def main():
     time_elapsed = round(end_time - start_time, 2)
     print('Completed {} total cycles in {} seconds'.format(
         num_cycles, time_elapsed))
+
+    #Get statistics
+    getStats(results)
 
     # Write results to file
     out_file = open('result.csv', 'w')

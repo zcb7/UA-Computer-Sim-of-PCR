@@ -29,7 +29,6 @@ def PCR(segment: Tuple[Sequence, Sequence], primers: Tuple[Sequence, Sequence], 
         # instead of every cycle
         fall_off_rate = generate_fall_off_rate(
             d=distance_between_primers(segment, primers), e=fall_off_noise)
-        print(fall_off_rate)
         products = annealing_elongation(single_strands, primers, fall_off_rate)
         products = clean_empty_sequences(products)
         products = clean_empty_tuples(products)
@@ -112,3 +111,31 @@ def elongate(template_strand, primer, fall_off_rate) -> Tuple[Sequence, Sequence
     copied_segment_sequence = template_strand.bases[end_index:start_index]
     copied_segment = Sequence(copied_segment_sequence).compliment()
     return (template_strand, copied_segment)
+
+
+def getStats(results: List[Tuple[Sequence, Sequence]]) -> List[int]:
+    """
+    Find length stats of fragments
+
+    Args: 
+        results (List[Tuple[Sequence, Sequence]]): Sequences and their compliments.
+
+    Returns:
+        fragment_lengths (List[int]): Lengths of each denatured strand.
+    """
+
+    fragment_lengths: List[int] = []
+
+    results.pop(0)
+
+    for fragment in denature(results):
+        fragment_lengths.append(len(fragment.bases))
+
+    print("Number of Fragments:", len(fragment_lengths))
+    print("Max Length:", max(fragment_lengths))
+    print("Min Length:", min(fragment_lengths))
+    print("Average Length:", (sum(fragment_lengths)/len(fragment_lengths)))
+
+    return(fragment_lengths)
+
+
