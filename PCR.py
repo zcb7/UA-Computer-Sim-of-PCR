@@ -29,7 +29,6 @@ def PCR(segment: Tuple[Sequence, Sequence], primers: Tuple[Sequence, Sequence], 
         # instead of every cycle
         fall_off_rate = generate_fall_off_rate(
             d=distance_between_primers(segment, primers), e=fall_off_noise)
-        print(fall_off_rate)
         products = annealing_elongation(single_strands, primers, fall_off_rate)
         products = clean_empty_sequences(products)
         products = clean_empty_tuples(products)
