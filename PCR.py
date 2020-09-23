@@ -126,12 +126,14 @@ def getStats(results: List[Tuple[Sequence, Sequence]]) -> List[int]:
 
     fragment_lengths: List[int] = []
 
+    M_gene_len = len(results[0][0].bases)
+
     results.pop(0)
 
     for fragment in denature(results):
             fragment_lengths.append(len(fragment.bases))
 
-    fragment_lengths.remove(669)
+    fragment_lengths.remove(M_gene_len)
 
     print("Number of Fragments:", len(fragment_lengths))
     print("Max Length:", max(fragment_lengths))
