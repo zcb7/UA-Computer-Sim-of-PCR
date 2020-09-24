@@ -1,7 +1,7 @@
 from time import time
 
 from GenBank import FASTA, Sequence
-from PCR import PCR, getStats
+from PCR import PCR, getStats, graphFragments
 
 
 def main():
@@ -34,8 +34,8 @@ def main():
     print('Completed {} total cycles in {} seconds'.format(
         num_cycles, time_elapsed))
 
-    #Get statistics
-    getStats(results)
+    # Get statistics and graph results
+    graphFragments(getStats(results))
 
     # Write results to file
     out_file = open('result.csv', 'w')

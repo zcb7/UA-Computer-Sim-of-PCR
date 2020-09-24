@@ -1,3 +1,4 @@
+from matplotlib import pyplot as plt
 from time import time
 from typing import List, Tuple
 
@@ -118,10 +119,10 @@ def getStats(results: List[Tuple[Sequence, Sequence]]) -> List[int]:
     Find length stats of fragments
 
     Args: 
-        results (List[Tuple[Sequence, Sequence]]): Sequences and their compliments.
+        results (List[Tuple[Sequence, Sequence]]): Sequences and their compliments
 
     Returns:
-        fragment_lengths (List[int]): Lengths of each denatured strand.
+        fragment_lengths (List[int]): Lengths of each denatured strand
     """
 
     fragment_lengths: List[int] = []
@@ -140,6 +141,34 @@ def getStats(results: List[Tuple[Sequence, Sequence]]) -> List[int]:
     print("Min Length:", min(fragment_lengths))
     print("Average Length:", (sum(fragment_lengths)/len(fragment_lengths)))
 
-    return(fragment_lengths)
+    return fragment_lengths
 
+def graphFragments(fragment_lengths: List[int]):
+    """
+    Display column graph to visualize distribution and length of fragments
 
+    Args:
+        fragment_lengths (List[int]): List containing the lengths of all protein fragments
+    """
+
+    i = min(fragment_lengths)
+    occurances = []
+    length = []
+    length_count = []
+
+    #Counts occurances of values and stores in a list
+    while i <= max(fragment_lengths):
+        occurances.append([i, fragment_lengths.count(i)])
+        i += 1
+
+    #Splits list for x, y values
+    for item in occurances:
+        length.append(item[0])
+        length_count.append(item[1])
+
+    plt.bar(length, length_count)
+    plt.title("Length and Quantity of M Protein Fragments")
+    plt.xlabel("Length of Fragments")
+    plt.ylabel("Number of Fragments")
+    plt.tight_layout()
+    plt.show()
