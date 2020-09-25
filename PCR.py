@@ -8,13 +8,14 @@ from Utils import (clean_empty_sequences, clean_empty_tuples,
                    distance_between_primers, generate_fall_off_rate)
 
 
-def PCR(segment: Tuple[Sequence, Sequence], primers: Tuple[Sequence, Sequence], num_cycles: int = 20, fall_off_noise: int = None) -> List[Tuple[Sequence, Sequence]]:
+def PCR(segment: Tuple[Sequence, Sequence], primers: Tuple[Sequence, Sequence], num_cycles: int = 20, fall_off_rate_pivot: int = None, fall_off_noise: int = None) -> List[Tuple[Sequence, Sequence]]:
     """Simulate Polymerase Chain Reaction
 
     Args:
         segment (Tuple[Sequence, Sequence]): Segment to copy
         primers (Tuple[Sequence, Sequence]): Primers on segment used to copy
         num_cycles (int): Amount of cycles of PCR to complete
+        fall_off_rate_pivot (int): The pivot used to generate the fall off rate
         fall_off_noise (int): Amount of noise to add to generated fall off rate
 
     Returns:
@@ -27,11 +28,8 @@ def PCR(segment: Tuple[Sequence, Sequence], primers: Tuple[Sequence, Sequence], 
 
         single_strands = denature(products)
 
-        # NOTE May want to calculate fall off rate every elongation
-        # instead of every cycle
-        fall_off_rate = generate_fall_off_rate(
-            d=distance_between_primers(segment, primers), e=fall_off_noise)
-        products = annealing_elongation(single_strands, primers, fall_off_rate)
+        products = annealing_elongation(
+            single_strands, primers, fall_off_rate_pivot, fall_off_noise)
         products = clean_empty_sequences(products)
         products = clean_empty_tuples(products)
 
@@ -61,12 +59,14 @@ def denature(sequences: List[Tuple[Sequence, Sequence]]) -> List[Sequence]:
     return single_strands
 
 
-def annealing_elongation(single_strands: List[Sequence], primers: Tuple[Sequence, Sequence], fall_off_rate: int) -> List[Sequence]:
+def annealing_elongation(single_strands: List[Sequence], primers: Tuple[Sequence, Sequence], fall_off_rate_pivot: int, fall_off_noise: int) -> List[Sequence]:
     """Anneals and elongates a list of single strands using provided forward and reverse primers
 
     Args:
         single_strands (List[Sequence]): List of single strands
         primers (Tuple[Sequence, Sequence]): Forward and reverse primers
+        fall_off_rate_pivot (int): The pivot used to generate the fall off rate
+        fall_off_noise (int): The amount of noise to apply to the fall off rate
 
     Returns:
         List[Sequence]: List of paired sequences
@@ -78,12 +78,14 @@ def annealing_elongation(single_strands: List[Sequence], primers: Tuple[Sequence
 
     for strand in single_strands:
         if strand.bases.find(f_primer.compliment().bases) != -1:
-            product = elongate(strand, f_primer, fall_off_rate)
+            product = elongate(
+                strand, f_primer, fall_off_rate_pivot, fall_off_noise)
             products.append(product)
             continue
 
         if strand.bases.find(r_primer.compliment().bases) != -1:
-            product = elongate(strand, r_primer, fall_off_rate)
+            product = elongate(
+                strand, r_primer, fall_off_rate_pivot, fall_off_noise)
             products.append(product)
             continue
 
@@ -91,13 +93,14 @@ def annealing_elongation(single_strands: List[Sequence], primers: Tuple[Sequence
     return products
 
 
-def elongate(template_strand, primer, fall_off_rate) -> Tuple[Sequence, Sequence]:
+def elongate(template_strand, primer, fall_off_rate_pivot, fall_off_noise) -> Tuple[Sequence, Sequence]:
     """Add nucleotides to single strand to create a paired strand
 
     Args:
         template_strand ([type]): Single strand to add nucleotides to
         primer ([type]): Location to start adding to
-        fall_off_rate ([type]): How many nucleotides should be added starting at the primer
+        fall_off_rate_pivot (int): The pivot used to generate the fall off rate
+        fall_off_rate ([type]): The amount of noise to apply to the fall off rate
 
     Returns:
         Tuple[Sequence, Sequence]: Elongated paired strand
@@ -108,6 +111,8 @@ def elongate(template_strand, primer, fall_off_rate) -> Tuple[Sequence, Sequence
 
     start_index = index_of_primer + primer_length
 
+    fall_off_rate = generate_fall_off_rate(
+        d=fall_off_rate_pivot, e=fall_off_noise)
     end_index = max(0, index_of_primer - fall_off_rate)
 
     copied_segment_sequence = template_strand.bases[end_index:start_index]

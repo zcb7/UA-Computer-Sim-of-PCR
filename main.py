@@ -1,7 +1,7 @@
 from time import time
 
 from GenBank import FASTA, Sequence
-from PCR import PCR, getStats, graphFragments
+from PCR import PCR, distance_between_primers, getStats, graphFragments
 
 
 def main():
@@ -23,12 +23,13 @@ def main():
     # products in the billions (and likely much higher since
     # it grows exponentially) and will blow the stack (MemoryError)
     num_cycles = 20
+    fall_off_rate_pivot = distance_between_primers(paired_sequence, primers)
     fall_off_noise = 50
 
     # Begin PCR
     start_time = time()
     results = PCR(paired_sequence, primers, num_cycles=num_cycles,
-                  fall_off_noise=fall_off_noise)
+                  fall_off_rate_pivot=fall_off_rate_pivot, fall_off_noise=fall_off_noise)
     end_time = time()
     time_elapsed = round(end_time - start_time, 2)
     print('Completed {} total cycles in {} seconds'.format(
