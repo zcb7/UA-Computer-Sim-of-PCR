@@ -179,3 +179,10 @@ def graphFragments(fragment_lengths: List[int]):
     plt.ylabel("Number of Fragments")
     plt.tight_layout()
     plt.show()
+
+    plt.bar(length, length_count)
+    plt.title("Length and Quantity of M Protein Fragments (Logarithmic)")
+    plt.xlabel("Length of Fragments")
+    plt.ylabel("Number of Fragments")
+    plt.tight_layout()
+    plt.show()
