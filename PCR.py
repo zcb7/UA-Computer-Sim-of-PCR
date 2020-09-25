@@ -1,6 +1,7 @@
-from matplotlib import pyplot as plt
 from time import time
 from typing import List, Tuple
+
+from matplotlib import pyplot as plt
 
 from GenBank import Sequence
 from Utils import (clean_empty_sequences, clean_empty_tuples,
@@ -68,7 +69,7 @@ def annealing_elongation(single_strands: List[Sequence], primers: Tuple[Sequence
         primers (Tuple[Sequence, Sequence]): Forward and reverse primers
 
     Returns:
-        List[Sequence]: [description]
+        List[Sequence]: List of paired sequences
     """
 
     products: List[Tuple[Sequence, Sequence]] = []
@@ -132,7 +133,7 @@ def getStats(results: List[Tuple[Sequence, Sequence]]) -> List[int]:
     results.pop(0)
 
     for fragment in denature(results):
-            fragment_lengths.append(len(fragment.bases))
+        fragment_lengths.append(len(fragment.bases))
 
     fragment_lengths.remove(M_gene_len)
 
@@ -142,6 +143,7 @@ def getStats(results: List[Tuple[Sequence, Sequence]]) -> List[int]:
     print("Average Length:", (sum(fragment_lengths)/len(fragment_lengths)))
 
     return fragment_lengths
+
 
 def graphFragments(fragment_lengths: List[int]):
     """
@@ -156,12 +158,12 @@ def graphFragments(fragment_lengths: List[int]):
     length = []
     length_count = []
 
-    #Counts occurances of values and stores in a list
+    # Counts occurances of values and stores in a list
     while i <= max(fragment_lengths):
         occurances.append([i, fragment_lengths.count(i)])
         i += 1
 
-    #Splits list for x, y values
+    # Splits list for x, y values
     for item in occurances:
         length.append(item[0])
         length_count.append(item[1])
