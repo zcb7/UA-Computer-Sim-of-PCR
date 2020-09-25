@@ -27,9 +27,6 @@ def distance_between_primers(segment: Tuple[Sequence, Sequence], primers: Tuple[
     Returns:
         [type]: Distance between forward and reverse primers
     """
-    # NOTE May need to be adjusted due to the inclusion (or exclusion im not really sure)
-    # of the primer in this value. I suggest we move the pivot of the random number
-    # range back 20 (current pivot - 20)
     start_index = segment[0].bases.find(primers[0].bases)
     end_index = len(segment[1].bases) - segment[1].bases.find(primers[1].bases)
     return end_index - start_index
