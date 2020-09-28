@@ -50,8 +50,6 @@ def main():
     out_file.close()
     print('Results written to result.csv')
 
-    # TODO Plot results with matplotlib and interpret
-
 
 if __name__ == "__main__":
     main()
