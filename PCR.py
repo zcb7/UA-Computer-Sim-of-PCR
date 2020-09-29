@@ -133,20 +133,20 @@ def getStats(results: List[Tuple[Sequence, Sequence]]) -> List[int]:
 
     fragment_lengths: List[int] = []
 
-    M_gene_len = len(results[0][0].bases)
-
-    original_strand = results.pop(0)
+    original_strand = results[0][0]
+    M_gene_len = len(original_strand.bases)
 
     for fragment in denature(results):
         fragment_lengths.append(len(fragment.bases))
 
-    fragment_lengths.remove(M_gene_len)
+    fragment_lengths = list(
+        filter(lambda x: x != M_gene_len, fragment_lengths))
 
     print("Number of Fragments:", len(fragment_lengths))
     print("Max Length:", max(fragment_lengths))
     print("Min Length:", min(fragment_lengths))
     print("Average Length:", (sum(fragment_lengths)/len(fragment_lengths)))
-    print("GC Content: ", original_strand[0].gc_content())
+    print("GC Content: ", original_strand.gc_content())
 
     return fragment_lengths
 
