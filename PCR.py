@@ -120,7 +120,7 @@ def elongate(template_strand, primer, fall_off_rate_pivot, fall_off_noise) -> Tu
     return (template_strand, copied_segment)
 
 
-def getStats(results: List[Tuple[Sequence, Sequence]]) -> List[int]:
+def getStats(results: List[Tuple[Sequence, Sequence]], primers: Tuple[Sequence, Sequence]) -> List[int]:
     """
     Find length stats of fragments
 
@@ -142,11 +142,19 @@ def getStats(results: List[Tuple[Sequence, Sequence]]) -> List[int]:
     fragment_lengths = list(
         filter(lambda x: x != M_gene_len, fragment_lengths))
 
+    copied_segment_length = distance_between_primers(
+        (original_strand, original_strand.compliment()), primers)
+    copied_segment_start = original_strand.bases.index(primers[0].bases)
+    copied_segment = Sequence(original_strand.bases[copied_segment_start:
+                                           copied_segment_start + copied_segment_length])
+
     print("Number of Fragments:", len(fragment_lengths))
     print("Max Length:", max(fragment_lengths))
     print("Min Length:", min(fragment_lengths))
     print("Average Length:", (sum(fragment_lengths)/len(fragment_lengths)))
-    print("GC Content: ", original_strand.gc_content())
+    print("GC Content for M gene:", original_strand.gc_content())
+    print("GC Content for copied segment:", copied_segment.gc_content())
+    print("Copied segment length:", copied_segment_length)
 
     return fragment_lengths
 

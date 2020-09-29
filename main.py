@@ -36,7 +36,7 @@ def main():
         num_cycles, time_elapsed))
 
     # Get statistics and graph results
-    graphFragments(getStats(results))
+    graphFragments(getStats(results, primers))
 
     # Write results to file
     out_file = open('result.csv', 'w')
